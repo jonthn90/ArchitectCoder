@@ -3,11 +3,9 @@ package xyz.jonthn.architectcoder.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.bold
-import androidx.core.text.buildSpannedString
-import xyz.jonthn.architectcoder.model.Movie
 import kotlinx.android.synthetic.main.activity_detail.*
 import xyz.jonthn.architectcoder.R
+import xyz.jonthn.architectcoder.model.Movie
 
 class DetailActivity : AppCompatActivity() {
 
@@ -21,6 +19,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         intent.getParcelableExtra<Movie>(MOVIE)?.run {
+
             movieDetailToolbar.title = title
 
             val background = backdropPath ?: posterPath
@@ -28,23 +27,7 @@ class DetailActivity : AppCompatActivity() {
 
             movieDetailSummary.text = overview
 
-            movieDetailInfo.text = buildSpannedString {
-
-                bold { append("Original language: ") }
-                appendln(originalLanguage)
-
-                bold { append("Original title: ") }
-                appendln(originalTitle)
-
-                bold { append("Release date: ") }
-                appendln(releaseDate)
-
-                bold { append("Popularity: ") }
-                appendln(popularity.toString())
-
-                bold { append("Vote Average: ") }
-                append(voteAverage.toString())
-            }
+            movieDetailInfo.setMovie(this)
         }
     }
 }
