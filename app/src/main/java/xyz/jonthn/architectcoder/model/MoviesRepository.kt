@@ -1,12 +1,12 @@
 package xyz.jonthn.architectcoder.model
 
-import android.app.Activity
+import android.app.Application
 import xyz.jonthn.architectcoder.R
 
-class MoviesRepository(activity: Activity) {
+class MoviesRepository(application: Application) {
 
-    private val apiKey = activity.getString(R.string.api_key)
-    private val regionRepository = RegionRepository(activity)
+    private val apiKey = application.getString(R.string.api_key)
+    private val regionRepository = RegionRepository(application)
 
     suspend fun findPopularMovies() =
         MovieDb.service

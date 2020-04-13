@@ -1,50 +1,53 @@
 package xyz.jonthn.architectcoder.ui.main
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import xyz.jonthn.architectcoder.R
-import xyz.jonthn.architectcoder.model.Movie
 import xyz.jonthn.architectcoder.model.MoviesRepository
+import xyz.jonthn.architectcoder.ui.PermissionRequester
+import xyz.jonthn.architectcoder.ui.common.getViewModel
 import xyz.jonthn.architectcoder.ui.common.startActivity
 import xyz.jonthn.architectcoder.ui.detail.DetailActivity
+import xyz.jonthn.architectcoder.ui.main.MainViewModel.UiModel.*
 
-class MainActivity : AppCompatActivity(), MainPresenter.View {
+class MainActivity : AppCompatActivity() {
 
-    private val presenter by lazy { MainPresenter(MoviesRepository(this)) }
+    private lateinit var viewModel: MainViewModel
 
-    private val adapter = MoviesAdapter(presenter::onMovieClicked)
+    private lateinit var adapter: MoviesAdapter
+
+    private val coarsePermissionRequester = PermissionRequester(
+        this,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter.onCreate(this)
+        viewModel = getViewModel { MainViewModel(MoviesRepository(application)) }
 
+        adapter = MoviesAdapter(viewModel::onMovieClicked)
         recycler.adapter = adapter
+        viewModel.model.observe(this, Observer(::updateUi))
     }
 
-    override fun showProgress() {
-        progress.visibility = View.VISIBLE
-    }
+    private fun updateUi(model: MainViewModel.UiModel) {
 
-    override fun hideProgress() {
-        progress.visibility = View.GONE
-    }
+        progress.visibility = if (model == Loading) View.VISIBLE else View.GONE
 
-    override fun updateData(movies: List<Movie>) {
-        adapter.movies = movies
-    }
-
-    override fun navigateTo(movie: Movie) {
-        startActivity<DetailActivity> {
-            putExtra(DetailActivity.MOVIE, movie)
+        when (model) {
+            is Content -> adapter.movies = model.movies
+            is Navigation -> startActivity<DetailActivity> {
+                putExtra(DetailActivity.MOVIE, model.movie)
+            }
+            RequestLocationPermission -> coarsePermissionRequester.request {
+                viewModel.onCoarsePermissionRequested()
+            }
         }
-    }
-
-    override fun onDestroy() {
-        presenter.onDestroy()
-        super.onDestroy()
     }
 }
