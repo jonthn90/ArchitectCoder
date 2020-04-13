@@ -1,4 +1,4 @@
-package xyz.jonthn.architectcoder.ui
+package xyz.jonthn.architectcoder.ui.detail
 
 import android.content.Context
 import android.util.AttributeSet

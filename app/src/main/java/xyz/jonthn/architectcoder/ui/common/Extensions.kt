@@ -1,4 +1,4 @@
-package xyz.jonthn.architectcoder.ui
+package xyz.jonthn.architectcoder.ui.common
 
 import android.app.Activity
 import android.content.Context
