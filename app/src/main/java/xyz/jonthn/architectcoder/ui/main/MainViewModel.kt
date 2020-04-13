@@ -7,17 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.launch
 import xyz.jonthn.architectcoder.model.Movie
 import xyz.jonthn.architectcoder.model.MoviesRepository
+import xyz.jonthn.architectcoder.ui.common.Event
 import xyz.jonthn.architectcoder.ui.common.Scope
 
 class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(),
     Scope by Scope.Impl() {
-
-    sealed class UiModel {
-        object Loading : UiModel()
-        class Content(val movies: List<Movie>) : UiModel()
-        class Navigation(val movie: Movie) : UiModel()
-        object RequestLocationPermission : UiModel()
-    }
 
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
@@ -25,6 +19,15 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
             if (_model.value == null) refresh()
             return _model
         }
+
+    private val _navigation = MutableLiveData<Event<Movie>>()
+    val navigation: LiveData<Event<Movie>> = _navigation
+
+    sealed class UiModel {
+        object Loading : UiModel()
+        class Content(val movies: List<Movie>) : UiModel()
+        object RequestLocationPermission : UiModel()
+    }
 
     init {
         initScope()
@@ -42,7 +45,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     }
 
     fun onMovieClicked(movie: Movie) {
-        _model.value = UiModel.Navigation(movie)
+        _navigation.value = Event(movie)
     }
 
     override fun onCleared() {
