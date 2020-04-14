@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_movie.view.*
 import xyz.jonthn.architectcoder.R
-import xyz.jonthn.architectcoder.model.Movie
+import xyz.jonthn.architectcoder.model.database.Movie
+
 import xyz.jonthn.architectcoder.ui.common.basicDiffUtil
 import xyz.jonthn.architectcoder.ui.common.inflate
 import xyz.jonthn.architectcoder.ui.common.loadUrl

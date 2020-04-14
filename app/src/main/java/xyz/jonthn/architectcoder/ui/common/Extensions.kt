@@ -15,6 +15,7 @@ import androidx.lifecycle.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import xyz.jonthn.architectcoder.MoviesApp
 import kotlin.properties.Delegates
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): View =
@@ -50,6 +51,7 @@ inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffU
         }).dispatchUpdatesTo(this@basicDiffUtil)
     }
 
+@Suppress("UNCHECKED_CAST")
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline factory: () -> T): T {
 
     val vmFactory = object : ViewModelProvider.Factory {
@@ -58,3 +60,6 @@ inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline fac
 
     return ViewModelProvider(this, vmFactory).get()
 }
+
+val Context.app: MoviesApp
+    get() = applicationContext as MoviesApp
