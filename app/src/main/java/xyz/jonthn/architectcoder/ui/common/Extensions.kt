@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import xyz.jonthn.architectcoder.MoviesApp
 import kotlin.properties.Delegates
+
+fun <T : ViewDataBinding> ViewGroup.bindingInflate(
+    @LayoutRes layoutRes: Int,
+    attachToRoot: Boolean = true
+): T =
+    DataBindingUtil.inflate(LayoutInflater.from(context), layoutRes, this, attachToRoot)
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): View =
     LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
