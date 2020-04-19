@@ -36,7 +36,7 @@
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:url="@{viewmodel.url}"
+                    app:urlDetail="@{viewmodel.url}"
                     tools:src="@mipmap/ic_launcher" />
 
                 <androidx.appcompat.widget.Toolbar
