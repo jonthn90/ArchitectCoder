@@ -1,2 +1,5 @@
 rootProject.name='Architect Coder'
 include ':app'
+include ':usescases'
+include ':data'
+include ':domain'
