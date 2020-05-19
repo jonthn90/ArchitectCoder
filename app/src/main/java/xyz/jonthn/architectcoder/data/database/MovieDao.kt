@@ -1,7 +1,6 @@
-package xyz.jonthn.architectcoder.model.database
+package xyz.jonthn.architectcoder.data.database
 
 import androidx.room.*
-import xyz.jonthn.architectcoder.model.database.Movie
 
 @Dao
 interface MovieDao {

@@ -3,32 +3,23 @@ package xyz.jonthn.architectcoder.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
-import xyz.jonthn.architectcoder.model.database.Movie
-import xyz.jonthn.architectcoder.model.server.MoviesRepository
 import xyz.jonthn.architectcoder.ui.common.ScopedViewModel
+import xyz.jonthn.domain.Movie
+import xyz.jonthn.usescases.FindMovieById
+import xyz.jonthn.usescases.ToggleMovieFavorite
 
-class DetailViewModel(private val movieId: Int, private val moviesRepository: MoviesRepository) :
+class DetailViewModel(
+    private val movieId: Int, private val findMovieById: FindMovieById,
+    private val toggleMovieFavorite: ToggleMovieFavorite
+) :
     ScopedViewModel() {
 
     private val _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> get() = _movie
 
-    private val _title = MutableLiveData<String>()
-    val title: LiveData<String> get() = _title
-
-    private val _overview = MutableLiveData<String>()
-    val overview: LiveData<String> get() = _overview
-
-    private val _url = MutableLiveData<String>()
-    val url: LiveData<String> get() = _url
-
-    private val _favorite = MutableLiveData<Boolean>()
-    val favorite: LiveData<Boolean> get() = _favorite
-
     init {
         launch {
-            _movie.value = moviesRepository.findById(movieId)
-            updateUi()
+            _movie.value = findMovieById.invoke(movieId)
         }
     }
 
@@ -37,18 +28,9 @@ class DetailViewModel(private val movieId: Int, private val moviesRepository: Mo
             movie.value?.let {
                 val updatedMovie = it.copy(favorite = !it.favorite)
                 _movie.value = updatedMovie
-                updateUi()
-                moviesRepository.update(updatedMovie)
-            }
-        }
-    }
 
-    private fun updateUi() {
-        movie.value?.run {
-            _title.value = title
-            _overview.value = overview
-            _url.value = backdropPath
-            _favorite.value = favorite
+                toggleMovieFavorite.invoke(updatedMovie)
+            }
         }
     }
 }

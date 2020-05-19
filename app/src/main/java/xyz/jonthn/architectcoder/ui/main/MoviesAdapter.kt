@@ -4,9 +4,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import xyz.jonthn.architectcoder.R
 import xyz.jonthn.architectcoder.databinding.ViewMovieBinding
-import xyz.jonthn.architectcoder.model.database.Movie
 import xyz.jonthn.architectcoder.ui.common.basicDiffUtil
 import xyz.jonthn.architectcoder.ui.common.bindingInflate
+import xyz.jonthn.domain.Movie
 
 class MoviesAdapter(private val listener: (Movie) -> Unit) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {

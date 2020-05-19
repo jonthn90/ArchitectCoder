@@ -3,12 +3,12 @@ package xyz.jonthn.architectcoder.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
-import xyz.jonthn.architectcoder.model.database.Movie
-import xyz.jonthn.architectcoder.model.server.MoviesRepository
 import xyz.jonthn.architectcoder.ui.common.Event
 import xyz.jonthn.architectcoder.ui.common.ScopedViewModel
+import xyz.jonthn.domain.Movie
+import xyz.jonthn.usescases.GetPopularMovies
 
-class MainViewModel(private val moviesRepository: MoviesRepository) : ScopedViewModel() {
+class MainViewModel(private val getPopularMovies: GetPopularMovies) : ScopedViewModel() {
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> get() = _movies
@@ -34,7 +34,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ScopedView
     fun onCoarsePermissionRequested() {
         launch {
             _loading.value = true
-            _movies.value = moviesRepository.findPopularMovies()
+            _movies.value = getPopularMovies.invoke()
             _loading.value = false
         }
     }

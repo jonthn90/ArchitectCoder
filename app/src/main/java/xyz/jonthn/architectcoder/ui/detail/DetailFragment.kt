@@ -7,11 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import xyz.jonthn.architectcoder.R
+import xyz.jonthn.architectcoder.data.AndroidPermissionChecker
+import xyz.jonthn.architectcoder.data.PlayServicesLocationDataSource
+import xyz.jonthn.architectcoder.data.database.RoomDataSource
+import xyz.jonthn.architectcoder.data.server.TheMovieDbDataSource
 import xyz.jonthn.architectcoder.databinding.FragmentDetailBinding
-import xyz.jonthn.architectcoder.model.server.MoviesRepository
 import xyz.jonthn.architectcoder.ui.common.app
 import xyz.jonthn.architectcoder.ui.common.bindingInflate
 import xyz.jonthn.architectcoder.ui.common.getViewModel
+import xyz.jonthn.data.repository.MoviesRepository
+import xyz.jonthn.data.repository.RegionRepository
+import xyz.jonthn.usescases.FindMovieById
+import xyz.jonthn.usescases.ToggleMovieFavorite
 
 class DetailFragment : Fragment() {
 
@@ -30,7 +37,22 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = getViewModel {
-            DetailViewModel(args.id, MoviesRepository(app))
+
+            val moviesRepository = MoviesRepository(
+                RoomDataSource(app.db),
+                TheMovieDbDataSource(),
+                RegionRepository(
+                    PlayServicesLocationDataSource(app),
+                    AndroidPermissionChecker(app)
+                ),
+                app.getString(R.string.api_key)
+            )
+
+
+            DetailViewModel(
+                args.id, FindMovieById(moviesRepository),
+                ToggleMovieFavorite(moviesRepository)
+            )
         }
 
         binding?.apply {

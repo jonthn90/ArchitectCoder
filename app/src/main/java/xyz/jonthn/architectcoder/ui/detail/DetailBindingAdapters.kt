@@ -6,7 +6,7 @@ import androidx.core.text.buildSpannedString
 import androidx.databinding.BindingAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import xyz.jonthn.architectcoder.R
-import xyz.jonthn.architectcoder.model.database.Movie
+import xyz.jonthn.domain.Movie
 
 @BindingAdapter("movie")
 fun TextView.updateMovieDetails(movie: Movie?) = movie?.run {

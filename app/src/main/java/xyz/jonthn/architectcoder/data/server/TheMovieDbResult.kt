@@ -1,4 +1,4 @@
-package xyz.jonthn.architectcoder.model.server
+package xyz.jonthn.architectcoder.data.server
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

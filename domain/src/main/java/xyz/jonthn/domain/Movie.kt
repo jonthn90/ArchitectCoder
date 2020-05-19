@@ -1,11 +1,7 @@
-package xyz.jonthn.architectcoder.model.database
+package xyz.jonthn.domain
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity
 data class Movie(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    val id: Int,
     val title: String,
     val overview: String,
     val releaseDate: String,

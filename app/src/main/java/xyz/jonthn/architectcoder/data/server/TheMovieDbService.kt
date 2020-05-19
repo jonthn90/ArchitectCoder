@@ -1,8 +1,7 @@
-package xyz.jonthn.architectcoder.model.server
+package xyz.jonthn.architectcoder.data.server
 
 import retrofit2.http.GET
 import retrofit2.http.Query
-import xyz.jonthn.architectcoder.model.server.MovieDbResult
 
 interface TheMovieDbService {
     @GET("discover/movie?sort_by=popularity.desc")

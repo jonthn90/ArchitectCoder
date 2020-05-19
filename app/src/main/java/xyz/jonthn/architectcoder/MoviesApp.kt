@@ -2,7 +2,7 @@ package xyz.jonthn.architectcoder
 
 import android.app.Application
 import androidx.room.Room
-import xyz.jonthn.architectcoder.model.database.MovieDatabase
+import xyz.jonthn.architectcoder.data.database.MovieDatabase
 
 class MoviesApp : Application() {
 

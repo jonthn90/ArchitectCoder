@@ -1,11 +1,11 @@
-package xyz.jonthn.architectcoder.model.server
+package xyz.jonthn.architectcoder.data.server
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object MovieDb {
+object TheMovieDb {
 
     private val okHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY

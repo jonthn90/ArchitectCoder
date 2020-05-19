@@ -7,7 +7,7 @@
 
         <variable
             name="movie"
-            type="xyz.jonthn.architectcoder.model.database.Movie" />
+            type="xyz.jonthn.domain.Movie"/>
     </data>
 
     <LinearLayout
