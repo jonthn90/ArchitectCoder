@@ -9,19 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.viewmodel.scope.viewModel
 import xyz.jonthn.architectcoder.PermissionRequester
 import xyz.jonthn.architectcoder.R
 import xyz.jonthn.architectcoder.databinding.FragmentMainBinding
 import xyz.jonthn.architectcoder.ui.common.EventObserver
-import xyz.jonthn.architectcoder.ui.common.app
 import xyz.jonthn.architectcoder.ui.common.bindingInflate
-import xyz.jonthn.architectcoder.ui.common.getViewModel
 
 class MainFragment : Fragment() {
 
-
-    private lateinit var component: MainActivityComponent
-    private val viewModel: MainViewModel by lazy { getViewModel { component.mainViewModel } }
+    private val viewModel: MainViewModel by lifecycleScope.viewModel(this)
 
     private lateinit var adapter: MoviesAdapter
     private val coarsePermissionRequester by lazy {
@@ -46,8 +44,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = view.findNavController()
-
-        component = app.component.plus(MainActivityModule())
 
         viewModel.navigateToMovie.observe(viewLifecycleOwner, EventObserver { id ->
             val action = MainFragmentDirections.actionMainFragmentToDetailFragment(id)

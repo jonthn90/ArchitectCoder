@@ -6,19 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.viewmodel.scope.viewModel
+import org.koin.core.parameter.parametersOf
 import xyz.jonthn.architectcoder.R
 import xyz.jonthn.architectcoder.databinding.FragmentDetailBinding
-import xyz.jonthn.architectcoder.ui.common.app
 import xyz.jonthn.architectcoder.ui.common.bindingInflate
-import xyz.jonthn.architectcoder.ui.common.getViewModel
 
 class DetailFragment : Fragment() {
 
     private var binding: FragmentDetailBinding? = null
     private val args: DetailFragmentArgs by navArgs()
 
-    private lateinit var component: DetailActivityComponent
-    private val viewModel by lazy { getViewModel { component.detaiViewModel } }
+    private val viewModel: DetailViewModel by lifecycleScope.viewModel(this) {
+        parametersOf(args.id)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,8 +32,6 @@ class DetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        component = app.component.plus(DetailActivityModule(args.id))
 
         binding?.apply {
             viewmodel = viewModel
