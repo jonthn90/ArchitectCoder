@@ -1,20 +1,19 @@
 package xyz.jonthn.architectcoder
 
 import android.app.Application
-import androidx.room.Room
-import xyz.jonthn.architectcoder.data.database.MovieDatabase
+import xyz.jonthn.architectcoder.di.DaggerMyMoviesComponent
+import xyz.jonthn.architectcoder.di.MyMoviesComponent
 
 class MoviesApp : Application() {
 
-    lateinit var db: MovieDatabase
+    lateinit var component: MyMoviesComponent
         private set
 
     override fun onCreate() {
         super.onCreate()
 
-        db = Room.databaseBuilder(
-            this,
-            MovieDatabase::class.java, "movie-db"
-        ).build()
+        component = DaggerMyMoviesComponent
+            .factory()
+            .create(this)
     }
 }

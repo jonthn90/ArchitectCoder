@@ -11,22 +11,18 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_main.*
 import xyz.jonthn.architectcoder.PermissionRequester
 import xyz.jonthn.architectcoder.R
-import xyz.jonthn.architectcoder.data.AndroidPermissionChecker
-import xyz.jonthn.architectcoder.data.PlayServicesLocationDataSource
 import xyz.jonthn.architectcoder.databinding.FragmentMainBinding
-import xyz.jonthn.architectcoder.data.database.RoomDataSource
-import xyz.jonthn.architectcoder.data.server.TheMovieDbDataSource
 import xyz.jonthn.architectcoder.ui.common.EventObserver
 import xyz.jonthn.architectcoder.ui.common.app
 import xyz.jonthn.architectcoder.ui.common.bindingInflate
 import xyz.jonthn.architectcoder.ui.common.getViewModel
-import xyz.jonthn.data.repository.MoviesRepository
-import xyz.jonthn.data.repository.RegionRepository
-import xyz.jonthn.usescases.GetPopularMovies
 
 class MainFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
+
+    private lateinit var component: MainActivityComponent
+    private val viewModel: MainViewModel by lazy { getViewModel { component.mainViewModel } }
+
     private lateinit var adapter: MoviesAdapter
     private val coarsePermissionRequester by lazy {
         PermissionRequester(
@@ -51,21 +47,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = view.findNavController()
 
-        viewModel = getViewModel {
-            MainViewModel(
-                GetPopularMovies(
-                    MoviesRepository(
-                        RoomDataSource(app.db),
-                        TheMovieDbDataSource(),
-                        RegionRepository(
-                            PlayServicesLocationDataSource(app),
-                            AndroidPermissionChecker(app)
-                        ),
-                        app.getString(R.string.api_key)
-                    )
-                )
-            )
-        }
+        component = app.component.plus(MainActivityModule())
 
         viewModel.navigateToMovie.observe(viewLifecycleOwner, EventObserver { id ->
             val action = MainFragmentDirections.actionMainFragmentToDetailFragment(id)
