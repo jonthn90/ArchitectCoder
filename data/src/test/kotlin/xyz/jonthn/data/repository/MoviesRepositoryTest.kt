@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -12,7 +12,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import xyz.jonthn.data.source.LocalDataSource
 import xyz.jonthn.data.source.RemoteDataSource
-import xyz.jonthn.domain.Movie
+import xyz.jonthn.testshared.mockedMovie
 
 @RunWith(MockitoJUnitRunner::class)
 class MoviesRepositoryTest {
@@ -41,6 +41,7 @@ class MoviesRepositoryTest {
         runBlocking {
 
             val localMovies = listOf(mockedMovie.copy(1))
+
             whenever(localDataSource.isEmpty()).thenReturn(false)
             whenever(localDataSource.getPopularMovies()).thenReturn(localMovies)
 
@@ -55,6 +56,7 @@ class MoviesRepositoryTest {
         runBlocking {
 
             val remoteMovies = listOf(mockedMovie.copy(2))
+
             whenever(localDataSource.isEmpty()).thenReturn(true)
             whenever(remoteDataSource.getPopularMovies(any(), any())).thenReturn(remoteMovies)
             whenever(regionRepository.findLastRegion()).thenReturn("US")
@@ -70,6 +72,7 @@ class MoviesRepositoryTest {
         runBlocking {
 
             val movie = mockedMovie.copy(id = 5)
+
             whenever(localDataSource.findById(5)).thenReturn(movie)
 
             val result = moviesRepository.findById(5)
@@ -89,18 +92,4 @@ class MoviesRepositoryTest {
             verify(localDataSource).update(movie)
         }
     }
-
-    private val mockedMovie = Movie(
-        0,
-        "Title",
-        "Overview",
-        "01/01/2025",
-        "",
-        "",
-        "EN",
-        "Title",
-        5.0,
-        5.1,
-        false
-    )
 }

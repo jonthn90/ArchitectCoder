@@ -8,6 +8,3 @@ dependencies {
     implementation kotlinLibs.values()
     testImplementation testLibs.values()
 }
-
-sourceCompatibility = "8"
-targetCompatibility = "8"

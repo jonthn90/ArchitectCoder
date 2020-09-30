@@ -2,13 +2,17 @@ package xyz.jonthn.architectcoder.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import xyz.jonthn.architectcoder.ui.common.Event
 import xyz.jonthn.architectcoder.ui.common.ScopedViewModel
 import xyz.jonthn.domain.Movie
 import xyz.jonthn.usescases.GetPopularMovies
 
-class MainViewModel(private val getPopularMovies: GetPopularMovies) : ScopedViewModel() {
+class MainViewModel(
+    private val getPopularMovies: GetPopularMovies,
+    uiDispatcher: CoroutineDispatcher
+) : ScopedViewModel(uiDispatcher) {
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> get() = _movies

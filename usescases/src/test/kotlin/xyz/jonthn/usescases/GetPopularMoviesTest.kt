@@ -9,6 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import xyz.jonthn.data.repository.MoviesRepository
+import xyz.jonthn.testshared.mockedMovie
 
 @RunWith(MockitoJUnitRunner::class)
 class GetPopularMoviesTest {
@@ -28,6 +29,7 @@ class GetPopularMoviesTest {
         runBlocking {
 
             val movies = listOf(mockedMovie.copy(id = 1))
+
             whenever(moviesRepository.getPopularMovies()).thenReturn(movies)
 
             val result = getPopularMovies.invoke()

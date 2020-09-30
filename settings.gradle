@@ -1,3 +1,4 @@
+include ':testShared'
 rootProject.name='Architect Coder'
 include ':app'
 include ':usescases'

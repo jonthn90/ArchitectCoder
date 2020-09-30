@@ -1,8 +1,8 @@
-package xyz.jonthn.usescases
+package xyz.jonthn.testshared
 
 import xyz.jonthn.domain.Movie
 
-internal val mockedMovie = Movie(
+val mockedMovie = Movie(
     0,
     "Title",
     "Overview",

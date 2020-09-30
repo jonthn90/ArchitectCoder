@@ -9,6 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import xyz.jonthn.data.repository.MoviesRepository
+import xyz.jonthn.testshared.mockedMovie
 
 @RunWith(MockitoJUnitRunner::class)
 class FindMovieByIdTest {
@@ -28,6 +29,7 @@ class FindMovieByIdTest {
         runBlocking {
 
             val movie = mockedMovie.copy(id = 1)
+
             whenever(moviesRepository.findById(1)).thenReturn(movie)
 
             val result = findMovieById.invoke(1)
