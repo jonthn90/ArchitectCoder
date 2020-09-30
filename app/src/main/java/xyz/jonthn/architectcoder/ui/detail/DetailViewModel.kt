@@ -16,9 +16,14 @@ class DetailViewModel(
 ) : ScopedViewModel(uiDispatcher) {
 
     private val _movie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie> get() = _movie
+    //val movie: LiveData<Movie> get() = _movie
 
-    init {
+    val movie: LiveData<Movie> get() {
+        if (_movie.value == null) findMovie()
+        return _movie
+    }
+
+    private fun findMovie() {
         launch {
             _movie.value = findMovieById.invoke(movieId)
         }
