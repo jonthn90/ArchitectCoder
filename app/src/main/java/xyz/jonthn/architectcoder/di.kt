@@ -14,6 +14,7 @@ import xyz.jonthn.architectcoder.data.AndroidPermissionChecker
 import xyz.jonthn.architectcoder.data.PlayServicesLocationDataSource
 import xyz.jonthn.architectcoder.data.database.MovieDatabase
 import xyz.jonthn.architectcoder.data.database.RoomDataSource
+import xyz.jonthn.architectcoder.data.server.TheMovieDb
 import xyz.jonthn.architectcoder.data.server.TheMovieDbDataSource
 import xyz.jonthn.architectcoder.ui.detail.DetailFragment
 import xyz.jonthn.architectcoder.ui.detail.DetailViewModel
@@ -41,10 +42,12 @@ private val appModule = module {
     single(named("apiKey")) { androidApplication().getString(R.string.api_key) }
     single { MovieDatabase.build(get()) }
     factory<LocalDataSource> { RoomDataSource(get()) }
-    factory<RemoteDataSource> { TheMovieDbDataSource() }
+    factory<RemoteDataSource> { TheMovieDbDataSource(get()) }
     factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }
     factory<PermissionChecker> { AndroidPermissionChecker(get()) }
     single<CoroutineDispatcher> { Dispatchers.Main }
+    single(named("baseUrl")) { "https://api.themoviedb.org/3/" }
+    single { TheMovieDb(get(named("baseUrl"))) }
 }
 
 val dataModule = module {
